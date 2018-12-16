@@ -209,4 +209,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * 使用timer( ),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，
+     * 等同于Android中Handler的postDelay( )方法：
+     */
+    private void timer(){
+        Observable.timer(2,TimeUnit.SECONDS)
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        Log.i(TAG, "call: " +aLong);
+                    }
+                });
+    }
 }
