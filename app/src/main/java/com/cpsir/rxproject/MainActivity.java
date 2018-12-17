@@ -11,8 +11,11 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func0;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "CZYAPP";
@@ -211,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 使用timer( ),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，
+     * 10.使用timer( ),创建一个Observable，它在一个给定的延迟后发射一个特殊的值，
      * 等同于Android中Handler的postDelay( )方法：
      */
     private void timer(){
@@ -223,4 +226,46 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    /**
+     * 11
+     * subscribeOn(): 指定 subscribe() 所发生的线程，即 Observable.OnSubscribe 被激活时所处的线程。或者叫做事件产生的线程。
+     observeOn(): 指定 Subscriber 所运行在的线程。或者叫做事件消费的线程。
+     */
+    private void shcedulThread(){
+        Observable.just(1,2,3)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        Log.i(TAG, "call: " +integer);
+                    }
+                });
+    }
+
+    /**
+     * 12
+     * map变换
+     */
+    private void map(){
+        Observable.just("20")
+                .map(new Func1<String, Integer>() {
+                    @Override
+                    public Integer call(String s) {
+                        return Integer.parseInt(s);
+                    }
+                }).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer o) {
+                Log.i(TAG, "call: " +o);
+            }
+        });
+    }
+
+    /**
+     * 13.
+     * flatMap
+     */
 }
